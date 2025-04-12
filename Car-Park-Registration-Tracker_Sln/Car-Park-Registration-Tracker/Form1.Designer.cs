@@ -131,6 +131,7 @@
             this.buttonOpen.TabIndex = 7;
             this.buttonOpen.Text = "Open";
             this.buttonOpen.UseVisualStyleBackColor = true;
+            this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
             // 
             // textBoxInput
             // 
@@ -138,7 +139,6 @@
             this.textBoxInput.Name = "textBoxInput";
             this.textBoxInput.Size = new System.Drawing.Size(218, 30);
             this.textBoxInput.TabIndex = 8;
-            this.textBoxInput.Text = "Text Box: Input";
             // 
             // buttonEnter
             // 
@@ -148,6 +148,7 @@
             this.buttonEnter.TabIndex = 9;
             this.buttonEnter.Text = "Enter";
             this.buttonEnter.UseVisualStyleBackColor = true;
+            this.buttonEnter.Click += new System.EventHandler(this.buttonEnter_Click);
             // 
             // buttonExit
             // 
@@ -166,6 +167,7 @@
             this.buttonEdit.TabIndex = 11;
             this.buttonEdit.Text = "Edit";
             this.buttonEdit.UseVisualStyleBackColor = true;
+            this.buttonEdit.Click += new System.EventHandler(this.buttonEdit_Click);
             // 
             // buttonReset
             // 
@@ -202,6 +204,7 @@
             this.buttonSave.TabIndex = 15;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // buttonTag
             // 
@@ -247,7 +250,7 @@
             this.Controls.Add(this.pictureBoxLogo);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Active Systems PTY";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
