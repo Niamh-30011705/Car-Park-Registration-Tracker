@@ -18,9 +18,11 @@ namespace Car_Park_Registration_Tracker
 {
     public partial class Form1: Form
     {
+        #region General
         public Form1()
         {
             InitializeComponent();
+            toolStripStatusLabel1.Text = "Program Ready";
         }
 
         // Declare two lists<string> to store the licence plates and tagged licence plates separately
@@ -28,6 +30,71 @@ namespace Car_Park_Registration_Tracker
         List<string> TaggedList = new List<string>();
         // Declare the currently opened file to use later
         string currentFileName = "";
+
+        // Method to refresh the main list box with the current main licence plate list
+        private void DisplayMainList()
+        {
+            // Sort list
+            MainList.Sort();
+            // Clear list box content
+            listBoxMain.Items.Clear();
+            // Add list items to relavent list box
+            foreach (var licencePlate in MainList)
+            {
+                // Check for empty spaces or empty lines and remove them
+                if (!string.IsNullOrWhiteSpace(licencePlate))
+                {
+                    listBoxMain.Items.Add(licencePlate);
+                }
+            }
+        }
+
+        // Method to refresh the tagged list box with the current tagged licence plate list
+        private void DisplayTaggedList()
+        {
+            // Sort list
+            TaggedList.Sort();
+            // Clear list box content
+            listBoxTagged.Items.Clear();
+            // Add list items to relavent list box
+            foreach (var licenceTagged in TaggedList)
+            {
+                // Check for empty spaces or empty lines and remove them
+                if (!string.IsNullOrWhiteSpace(licenceTagged))
+                {
+                    listBoxTagged.Items.Add(licenceTagged);
+                }
+            }
+        }
+
+        // Method to display selected licence plate in Main list box into text box
+        private void listBoxMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Make sure something is selected
+            if (listBoxMain.SelectedItem != null)
+            {
+                // Display selected licence plate in the text box
+                textBoxInput.Text = listBoxMain.SelectedItem.ToString();
+                toolStripStatusLabel1.Text = "Licence plate loaded into input box";
+                // Auto focus the textbox
+                textBoxInput.Focus();
+            }
+        }
+
+        // Method to display selected licence plate in Tagged list box into text box
+        private void listBoxTagged_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Make sure something is selected
+            if (listBoxTagged.SelectedItem != null)
+            {
+                // Display selected licence plate in the text box
+                textBoxInput.Text = listBoxTagged.SelectedItem.ToString();
+                toolStripStatusLabel1.Text = "Tagged licence plate loaded into input box";
+                // Auto focus the textbox
+                textBoxInput.Focus();
+            }
+        }
+        #endregion General
 
         #region TextFileIO
         // Method to open a text file and loads the data from it when the "Open" button is clicked
@@ -61,61 +128,68 @@ namespace Car_Park_Registration_Tracker
                 {
                     while (!reader.EndOfStream)
                     {
-                        MainList.Add(reader.ReadLine());
-                        TaggedList.Add(reader.ReadLine());
+                        string mainPlate = reader.ReadLine();
+                        string taggedPlate = reader.EndOfStream ? "" : reader.ReadLine();
+
+                        MainList.Add(mainPlate);
+                        TaggedList.Add(taggedPlate);
                     }
                 }
                 // Diaplay updated lists
-                DisplayLists();
+                DisplayMainList();
+                DisplayTaggedList();
+                toolStripStatusLabel1.Text = $"Text file '{Path.GetFileName(currentFileName)}' opened successfully";
+                statusStrip.Refresh();
             }
             catch (IOException)
             {
                 // Show error if file read fails
-                MessageBox.Show("Open Text File Error");
+                toolStripStatusLabel1.Text = "An error occured: Unable to open text file";
             }
         }
 
         // Method to write the current lists to a text file
-        private void SaveTextFile(string fileName)
+        private void SaveToFile(string fileName)
         {
-            try
+            SaveFileDialog saveDialog = new SaveFileDialog
             {
-                using (StreamWriter writer = new StreamWriter(fileName, false))
+                Filter = "Text Files (*.txt) | *.txt",
+                DefaultExt = "txt",
+                Title = "Save Licence Plate Data"
+            };
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
                 {
-                    foreach (var licencePlate in MainList)
+                    using (StreamWriter writer = new StreamWriter(fileName))
                     {
-                        // writes each licence plate on a new line
-                        writer.WriteLine(licencePlate);
+                        // Save both lists line by line (in pairs)
+                        int count = Math.Max(MainList.Count, TaggedList.Count);
+                        for (int i = 0; i < count; i++)
+                        {
+                            // Avoid index errors
+                            writer.WriteLine(i < MainList.Count ? MainList[i] : "");
+                            writer.WriteLine(i < TaggedList.Count ? TaggedList[i] : "");
+                        }
                     }
-                    foreach (var licenceTagged in TaggedList)
-                    {
-                        // writes each tagged licence plate on a new line
-                        writer.WriteLine(licenceTagged);
-                    }
+                    toolStripStatusLabel1.Text = $"Data saved successfully to {Path.GetFileName(fileName)}";
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show($"An error occurred while saving the file: {ex.Message}", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    toolStripStatusLabel1.Text = "Error: Could not save file.";
                 }
             }
-            catch (IOException)
+            else
             {
-                // Show error if write fails
-                MessageBox.Show("File NOT saved");
+                toolStripStatusLabel1.Text = "Save cancelled.";
             }
         }
-
-        // Method to open a save dialog and calles the save method when the "Save" button is clicked
+        
+        // Method to call the save method when the "Save" button is clicked
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveTextFileDialog = new SaveFileDialog();
-            saveTextFileDialog.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath);
-            DialogResult sr = saveTextFileDialog.ShowDialog();
-            if (sr == DialogResult.OK)
-            {
-                // Save list to file
-                SaveTextFile(saveTextFileDialog.FileName);
-            }
-            if (sr == DialogResult.Cancel)
-            {
-                return;
-            }
+            SaveToFile();
         }
 
         // Method called when the form is closed - saved the list to a new file with an incremented number
@@ -138,7 +212,7 @@ namespace Car_Park_Registration_Tracker
                 }
                 string newfilename = "day_" + newValue + ".txt";
                 // Auto-save to incremented filename
-                SaveTextFile(newfilename);
+                SaveToFile(newfilename);
             }
             catch
             {
@@ -148,7 +222,8 @@ namespace Car_Park_Registration_Tracker
         }
         #endregion TextFileIO
 
-        #region Buttons
+        #region AddEditDelete
+        #region Add
         // Method to add a new licence plate to the main list
         private void buttonEnter_Click(object sender, EventArgs e)
         {
@@ -160,7 +235,8 @@ namespace Car_Park_Registration_Tracker
                 // Sort list alphabetically with built-in function
                 MainList.Sort();
                 // Refresh the list display
-                DisplayLists();
+                DisplayMainList();
+                toolStripStatusLabel1.Text = "Licence plate successfully added";
                 // Clear and refocus the input field
                 textBoxInput.Clear();
                 textBoxInput.Focus();
@@ -168,77 +244,121 @@ namespace Car_Park_Registration_Tracker
             else
             {
                 // Display error message for invalid input
-                MessageBox.Show("Text box is empty or input is invalid. Please try again.");
+                toolStripStatusLabel1.Text = "Text box is empty or input is invalid. Please try again.";
             }
         }
+        #endregion Add
 
+        #region Edit
         // Method to edit an existing licence plate in either list
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            // Replace selected item
-            MainList[listBoxMain.SelectedIndex] = textBoxInput.Text;
-            TaggedList[listBoxTagged.SelectedIndex] = textBoxInput.Text;
-            // Clear text box and display updated lists
-            textBoxInput.Clear();
-            DisplayLists();
-        }
-
-        // Method to delete selected licence plate from either list
-        private void buttonExit_Click(object sender, EventArgs e)
-        {
-            // Remove selected licence plate from Main List
-            listBoxMain.SetSelected(listBoxMain.SelectedIndex, true);
-            MainList.RemoveAt(listBoxMain.SelectedIndex);
-            // Refresh display
-            DisplayLists();
-            // Clear and refocus the input field
-            textBoxInput.Clear();
-            textBoxInput.Focus();
-            // Remove selected licence plate from Tagged List
-            listBoxTagged.SetSelected(listBoxTagged.SelectedIndex, true);
-            TaggedList.RemoveAt(listBoxTagged.SelectedIndex);
-            // Refresh display
-            DisplayLists();
-            // Clear and refocus the input field
-            textBoxInput.Clear();
-            textBoxInput.Focus();
-        }
-
-        
-        #endregion Buttons
-
-        #region Functions
-        // Method to refresh the list boxes with the current licence plate list
-        private void DisplayLists()
-        {
-            // Clear list boxes content
-            listBoxMain.Items.Clear();
-            listBoxTagged.Items.Clear();
-            // Add list items to relavent list boxes
-            foreach (var licencePlate in MainList)
+            // Check updated licence plate is not a duplicate
+            if (ValidPlate(textBoxInput.Text))
             {
-                listBoxMain.Items.Add(licencePlate);
-                MainList.Sort();
+                if (listBoxMain.SelectedIndex != -1)
+                {
+                    // Replace selected item
+                    MainList[listBoxMain.SelectedIndex] = textBoxInput.Text;
+                    // Update list box
+                    DisplayMainList();
+                }
+                if (listBoxTagged.SelectedIndex != -1)
+                {
+                    // Replace selected item
+                    TaggedList[listBoxTagged.SelectedIndex] = textBoxInput.Text;
+                    // Update list box
+                    DisplayTaggedList();
+                }
+                // Clear text box and display updated lists
+                textBoxInput.Clear();
+                textBoxInput.Focus();
+                // Update status strip
+                toolStripStatusLabel1.Text = "Licence plate updated successfully";
             }
-            foreach (var licenceTagged in TaggedList)
+            else
             {
-                listBoxTagged.Items.Add(licenceTagged);
-                TaggedList.Sort();
+                // Display error to user
+                toolStripStatusLabel1.Text = $"Updated licencce plate '{textBoxInput.Text}' is a duplicate. Please try again.";
             }
         }
+        #endregion Edit
 
         // Method to check for duplicate licence plates in the lists
         private bool ValidPlate(string checkThisPlate)
         {
-            if (MainList.Exists(duplicate => duplicate.Equals(checkThisPlate)))
+            return !MainList.Contains(checkThisPlate) && !TaggedList.Contains(checkThisPlate);
+        }
+
+        #region Delete
+        // Method to delete selected licence plate from either list
+        private void buttonExit_Click(object sender, EventArgs e)
+        {
+            if (listBoxMain.SelectedIndex != -1)
             {
-                return false;
+                // Remove selcted licence plate from Main List
+                MainList.RemoveAt(listBoxMain.SelectedIndex);
+                // Refresh display
+                DisplayMainList();
             }
-            else
+            if (listBoxTagged.SelectedIndex != -1)
             {
-                return true;
+                // Remove selected licence plate from Tagged List
+                TaggedList.RemoveAt(listBoxTagged.SelectedIndex);
+                // Refresh display
+                DisplayTaggedList();
+            }
+            // Clear and refocus the input field
+            textBoxInput.Clear();
+            textBoxInput.Focus();
+        }
+
+        // Method to delete licence plate double clicked in Main list box
+        private void listBoxMain_DoubleClick(object sender, EventArgs e)
+        {
+            // Check if a licence plate is selcted
+            if (listBoxMain.SelectedItem != null)
+            {
+                string selectedPlate = listBoxMain.SelectedItem.ToString();
+                // Show confirmation dialog box
+                DialogResult result = MessageBox.Show(
+                    $"Are you sure you want to delete the licence plate: {selectedPlate}?",
+                    "Confirm Deletion",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+                // If user clicks ok
+                if (result == DialogResult.OK)
+                {
+                    // Remove from MainList
+                    MainList.Remove(selectedPlate);
+                    // Clear the input text box
+                    textBoxInput.Clear();
+                    // Refresh the display
+                    DisplayMainList();
+                    // Update the status strip
+                    toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' was removed";
+                }
+                else
+                {
+                    // Display error to user
+                    toolStripStatusLabel1.Text = "Deletion cancelled";
+                }
             }
         }
-        #endregion Functions
+        #endregion Delete
+        #endregion AddEditDelete
+
+        #region Reset
+        private void buttonReset_Click(object sender, EventArgs e)
+        {
+            // Clear licence plate data from both lists
+            MainList.Clear();
+            TaggedList.Clear();
+            // Clear list boxes and text box
+            listBoxMain.Items.Clear();
+            listBoxTagged.Items.Clear();
+            textBoxInput.Clear();
+        }
+        #endregion Reset
     } // end class
 } // end namespace

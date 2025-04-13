@@ -46,7 +46,9 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonTag = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBoxLogo
@@ -104,6 +106,7 @@
             this.listBoxMain.Name = "listBoxMain";
             this.listBoxMain.Size = new System.Drawing.Size(167, 379);
             this.listBoxMain.TabIndex = 4;
+            this.listBoxMain.DoubleClick += new System.EventHandler(this.listBoxMain_DoubleClick);
             // 
             // labelTagged
             // 
@@ -177,6 +180,7 @@
             this.buttonReset.TabIndex = 12;
             this.buttonReset.Text = "Reset";
             this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
             // buttonBinary
             // 
@@ -219,17 +223,25 @@
             // 
             this.statusStrip.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.statusStrip.Location = new System.Drawing.Point(0, 561);
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip.Location = new System.Drawing.Point(0, 530);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(616, 22);
+            this.statusStrip.Size = new System.Drawing.Size(615, 53);
             this.statusStrip.TabIndex = 17;
             this.statusStrip.Text = "statusStrip";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(117, 46);
+            this.toolStripStatusLabel1.Text = "Processing...";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(616, 583);
+            this.ClientSize = new System.Drawing.Size(410, 388);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.buttonTag);
             this.Controls.Add(this.buttonSave);
@@ -254,6 +266,8 @@
             this.Name = "Form1";
             this.Text = "Active Systems PTY";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -279,6 +293,7 @@
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonTag;
         private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 
