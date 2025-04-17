@@ -71,7 +71,7 @@
             this.textBoxTitle.Location = new System.Drawing.Point(12, 36);
             this.textBoxTitle.Name = "textBoxTitle";
             this.textBoxTitle.ReadOnly = true;
-            this.textBoxTitle.Size = new System.Drawing.Size(430, 46);
+            this.textBoxTitle.Size = new System.Drawing.Size(430, 31);
             this.textBoxTitle.TabIndex = 1;
             this.textBoxTitle.Text = "Active Systems Pty";
             this.textBoxTitle.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -84,7 +84,7 @@
             this.textBoxSubtitle.Location = new System.Drawing.Point(12, 88);
             this.textBoxSubtitle.Name = "textBoxSubtitle";
             this.textBoxSubtitle.ReadOnly = true;
-            this.textBoxSubtitle.Size = new System.Drawing.Size(430, 28);
+            this.textBoxSubtitle.Size = new System.Drawing.Size(430, 19);
             this.textBoxSubtitle.TabIndex = 2;
             this.textBoxSubtitle.Text = "Licence Plate Management";
             this.textBoxSubtitle.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -94,18 +94,19 @@
             this.labelLicencePlates.AutoSize = true;
             this.labelLicencePlates.Location = new System.Drawing.Point(12, 143);
             this.labelLicencePlates.Name = "labelLicencePlates";
-            this.labelLicencePlates.Size = new System.Drawing.Size(145, 25);
+            this.labelLicencePlates.Size = new System.Drawing.Size(104, 17);
             this.labelLicencePlates.TabIndex = 3;
             this.labelLicencePlates.Text = "Licence Plates:";
             // 
             // listBoxMain
             // 
             this.listBoxMain.FormattingEnabled = true;
-            this.listBoxMain.ItemHeight = 25;
+            this.listBoxMain.ItemHeight = 16;
             this.listBoxMain.Location = new System.Drawing.Point(12, 171);
             this.listBoxMain.Name = "listBoxMain";
-            this.listBoxMain.Size = new System.Drawing.Size(167, 379);
+            this.listBoxMain.Size = new System.Drawing.Size(167, 372);
             this.listBoxMain.TabIndex = 4;
+            this.listBoxMain.SelectedIndexChanged += new System.EventHandler(this.listBoxMain_SelectedIndexChanged);
             this.listBoxMain.DoubleClick += new System.EventHandler(this.listBoxMain_DoubleClick);
             // 
             // labelTagged
@@ -113,18 +114,19 @@
             this.labelTagged.AutoSize = true;
             this.labelTagged.Location = new System.Drawing.Point(185, 143);
             this.labelTagged.Name = "labelTagged";
-            this.labelTagged.Size = new System.Drawing.Size(86, 25);
+            this.labelTagged.Size = new System.Drawing.Size(61, 17);
             this.labelTagged.TabIndex = 5;
             this.labelTagged.Text = "Tagged:";
             // 
             // listBoxTagged
             // 
             this.listBoxTagged.FormattingEnabled = true;
-            this.listBoxTagged.ItemHeight = 25;
+            this.listBoxTagged.ItemHeight = 16;
             this.listBoxTagged.Location = new System.Drawing.Point(190, 171);
             this.listBoxTagged.Name = "listBoxTagged";
-            this.listBoxTagged.Size = new System.Drawing.Size(167, 379);
+            this.listBoxTagged.Size = new System.Drawing.Size(167, 372);
             this.listBoxTagged.TabIndex = 6;
+            this.listBoxTagged.SelectedIndexChanged += new System.EventHandler(this.listBoxTagged_SelectedIndexChanged);
             // 
             // buttonOpen
             // 
@@ -140,7 +142,7 @@
             // 
             this.textBoxInput.Location = new System.Drawing.Point(363, 226);
             this.textBoxInput.Name = "textBoxInput";
-            this.textBoxInput.Size = new System.Drawing.Size(218, 30);
+            this.textBoxInput.Size = new System.Drawing.Size(218, 23);
             this.textBoxInput.TabIndex = 8;
             // 
             // buttonEnter
@@ -225,23 +227,23 @@
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip.Location = new System.Drawing.Point(0, 530);
+            this.statusStrip.Location = new System.Drawing.Point(0, 553);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(615, 53);
+            this.statusStrip.Size = new System.Drawing.Size(600, 24);
             this.statusStrip.TabIndex = 17;
             this.statusStrip.Text = "statusStrip";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(117, 46);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(83, 19);
             this.toolStripStatusLabel1.Text = "Processing...";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 388);
+            this.ClientSize = new System.Drawing.Size(600, 577);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.buttonTag);
             this.Controls.Add(this.buttonSave);
@@ -265,6 +267,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Active Systems PTY";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
