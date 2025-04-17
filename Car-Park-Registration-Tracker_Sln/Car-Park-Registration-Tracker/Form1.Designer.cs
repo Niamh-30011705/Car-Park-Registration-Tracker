@@ -127,6 +127,7 @@
             this.listBoxTagged.Size = new System.Drawing.Size(167, 372);
             this.listBoxTagged.TabIndex = 6;
             this.listBoxTagged.SelectedIndexChanged += new System.EventHandler(this.listBoxTagged_SelectedIndexChanged);
+            this.listBoxTagged.DoubleClick += new System.EventHandler(this.listBoxTagged_DoubleClick);
             // 
             // buttonOpen
             // 
@@ -192,6 +193,7 @@
             this.buttonBinary.TabIndex = 13;
             this.buttonBinary.Text = "Binary Search";
             this.buttonBinary.UseVisualStyleBackColor = true;
+            this.buttonBinary.Click += new System.EventHandler(this.buttonBinary_Click);
             // 
             // buttonLinear
             // 

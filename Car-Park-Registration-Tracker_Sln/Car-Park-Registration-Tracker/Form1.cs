@@ -1,6 +1,6 @@
 ﻿// Niamh Cavanagh
 // Date: 12 April 2025
-// Version: 1.0
+// Version: 1.1
 // Car Park Registration Tracker aka Licence Plate Management
 
 using System;
@@ -110,6 +110,21 @@ namespace Car_Park_Registration_Tracker
             }
         }
         #endregion SelectedDisplay
+
+        #region Reset
+        // 2.6
+        // Method to remove all data from both lists
+        private void buttonReset_Click(object sender, EventArgs e)
+        {
+            // Clear licence plate data from both lists
+            MainList.Clear();
+            TaggedList.Clear();
+            // Clear list boxes and text box
+            listBoxMain.Items.Clear();
+            listBoxTagged.Items.Clear();
+            textBoxInput.Clear();
+        }
+        #endregion Reset
         #endregion General
 
         #region TextFileIO
@@ -323,130 +338,157 @@ namespace Car_Park_Registration_Tracker
 
         #region AddEditDeleteTag
         #region Add
+        // 2.3
         // Method to add a new licence plate to the main list
         private void buttonEnter_Click(object sender, EventArgs e)
         {
-            //// Check that input is not empty and is a valid (non-duplicate) licence plate
-            //if (!string.IsNullOrWhiteSpace(textBoxInput.Text) && (ValidPlate(textBoxInput.Text)))
-            //{
-            //    // Add user input to main list
-            //    MainList.Add(textBoxInput.Text);
-            //    // Sort list alphabetically with built-in function
-            //    MainList.Sort();
-            //    // Refresh the list display
-            //    DisplayMainList();
-            //    toolStripStatusLabel1.Text = "Licence plate successfully added";
-            //    // Clear and refocus the input field
-            //    textBoxInput.Clear();
-            //    textBoxInput.Focus();
-            //}
-            //else
-            //{
-            //    // Display error message for invalid input
-            //    toolStripStatusLabel1.Text = "Text box is empty or input is invalid. Please try again.";
-            //}
+            // Check that input is not empty and is a valid (non-duplicate) licence plate
+            if (!string.IsNullOrWhiteSpace(textBoxInput.Text) && (ValidPlate(textBoxInput.Text)))
+            {
+                // Add user input to main list
+                MainList.Add(textBoxInput.Text);
+                // Refresh the list display
+                DisplayMainList();
+                toolStripStatusLabel1.Text = "Licence plate successfully added";
+                // Clear and refocus the input field
+                textBoxInput.Clear();
+                textBoxInput.Focus();
+            }
+            else
+            {
+                // Display error message for invalid input
+                toolStripStatusLabel1.Text = "Text box is empty, the input is invalid, or there is a duplicate. Please try again.";
+            }
         }
         #endregion Add
 
         #region Edit
+        // 2.5
         // Method to edit an existing licence plate in either list
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            //// Check updated licence plate is not a duplicate
-            //if (ValidPlate(textBoxInput.Text))
-            //{
-            //    if (listBoxMain.SelectedIndex != -1)
-            //    {
-            //        // Replace selected item
-            //        MainList[listBoxMain.SelectedIndex] = textBoxInput.Text;
-            //        // Update list box
-            //        DisplayMainList();
-            //    }
-            //    if (listBoxTagged.SelectedIndex != -1)
-            //    {
-            //        // Replace selected item
-            //        TaggedList[listBoxTagged.SelectedIndex] = textBoxInput.Text;
-            //        // Update list box
-            //        DisplayTaggedList();
-            //    }
-            //    // Clear text box and display updated lists
-            //    textBoxInput.Clear();
-            //    textBoxInput.Focus();
-            //    // Update status strip
-            //    toolStripStatusLabel1.Text = "Licence plate updated successfully";
-            //}
-            //else
-            //{
-            //    // Display error to user
-            //    toolStripStatusLabel1.Text = $"Updated licencce plate '{textBoxInput.Text}' is a duplicate. Please try again.";
-            //}
+            // Check updated licence plate is not a duplicate
+            if (ValidPlate(textBoxInput.Text))
+            {
+                // If user selected from main list
+                if (listBoxMain.SelectedItem != null)
+                {
+                    // Replace selected item with textBoxInput
+                    MainList[listBoxMain.SelectedIndex] = textBoxInput.Text;
+                    // Display updated list
+                    DisplayMainList();
+                    listBoxMain.ClearSelected();
+                    // Clear text box and display updated lists
+                    textBoxInput.Clear();
+                    textBoxInput.Focus();
+                    // Update status strip
+                    toolStripStatusLabel1.Text = "Licence plate updated successfully";
+                    return;
+                }
+                // If user selected from tagged list
+                if (listBoxTagged.SelectedItem != null)
+                {
+                    // Replace selected item with textBoxInput
+                    TaggedList[listBoxTagged.SelectedIndex] = textBoxInput.Text;
+                    // Display updated list
+                    DisplayTaggedList();
+                    listBoxTagged.ClearSelected();
+                    // Clear text box and display updated lists
+                    textBoxInput.Clear();
+                    textBoxInput.Focus();
+                    // Update status strip
+                    toolStripStatusLabel1.Text = "Licence plate updated successfully";
+                    return;
+                }
+                // Clear text box and display updated lists
+                textBoxInput.Clear();
+                textBoxInput.Focus();
+                // If nothing is seleced, display error message to user
+                toolStripStatusLabel1.Text = "You need to select a licence plate to edit";
+            }
+            else
+            {
+                // Display error to user
+                toolStripStatusLabel1.Text = $"Updated licencce plate '{textBoxInput.Text}' is a duplicate. Please try again.";
+            }
         }
         #endregion Edit
 
+        // 2.3
         // Method to check for duplicate licence plates in the lists
-        //private bool ValidPlate(string checkThisPlate)
-        //{
-        //    //return !MainList.Contains(checkThisPlate) && !TaggedList.Contains(checkThisPlate);
-        //}
+        private bool ValidPlate(string checkThisPlate)
+        {
+            return !MainList.Contains(checkThisPlate) && !TaggedList.Contains(checkThisPlate);
+        }
 
         #region Delete
+        // 2.4 b
         // Method to delete selected licence plate from either list
         private void buttonExit_Click(object sender, EventArgs e)
         {
-            //if (listBoxMain.SelectedIndex != -1)
-            //{
-            //    // Remove selcted licence plate from Main List
-            //    MainList.RemoveAt(listBoxMain.SelectedIndex);
-            //    // Refresh display
-            //    DisplayMainList();
-            //}
-            //if (listBoxTagged.SelectedIndex != -1)
-            //{
-            //    // Remove selected licence plate from Tagged List
-            //    TaggedList.RemoveAt(listBoxTagged.SelectedIndex);
-            //    // Refresh display
-            //    DisplayTaggedList();
-            //}
-            //// Clear and refocus the input field
-            //textBoxInput.Clear();
-            //textBoxInput.Focus();
+            // If user selected from the tagged list, display error
+            if (listBoxTagged.SelectedItem != null)
+            {
+                // Display error message
+                toolStripStatusLabel1.Text = "You need to untag the licence plate before it can exit";
+                listBoxTagged.ClearSelected();
+                return;
+            }
+            // If user selected from the main list - proceed with delete
+            if (listBoxMain.SelectedItem != null)
+            {
+                // Declare selectedPlate as the selected item in the main list
+                string selectedPlate = listBoxMain.SelectedItem.ToString();
+                // Remove selected licence plate from main list
+                MainList.Remove(selectedPlate);
+                // Refresh display
+                DisplayMainList();
+                // Clear and refocus the input field
+                textBoxInput.Clear();
+                textBoxInput.Focus();
+                return;
+            }
+            // If nothing is seleced, display error message to user
+            toolStripStatusLabel1.Text = "You need to select a licence plate from the main list to exit";
         }
 
+        // 2.4 a
         // Method to delete licence plate double clicked in Main list box
         private void listBoxMain_DoubleClick(object sender, EventArgs e)
         {
-            //// Check if a licence plate is selcted
-            //if (listBoxMain.SelectedItem != null)
-            //{
-            //    string selectedPlate = listBoxMain.SelectedItem.ToString();
-            //    // Show confirmation dialog box
-            //    DialogResult result = MessageBox.Show(
-            //        $"Are you sure you want to delete the licence plate: {selectedPlate}?",
-            //        "Confirm Deletion",
-            //        MessageBoxButtons.OKCancel,
-            //        MessageBoxIcon.Warning);
-            //    // If user clicks ok
-            //    if (result == DialogResult.OK)
-            //    {
-            //        // Remove from MainList
-            //        MainList.Remove(selectedPlate);
-            //        // Clear the input text box
-            //        textBoxInput.Clear();
-            //        // Refresh the display
-            //        DisplayMainList();
-            //        // Update the status strip
-            //        toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' was removed";
-            //    }
-            //    else
-            //    {
-            //        // Display error to user
-            //        toolStripStatusLabel1.Text = "Deletion cancelled";
-            //    }
-            //}
+            // Check if a licence plate is selcted
+            if (listBoxMain.SelectedItem != null)
+            {
+                string selectedPlate = listBoxMain.SelectedItem.ToString();
+                // Show confirmation dialog box
+                DialogResult result = MessageBox.Show(
+                    $"Are you sure you want to delete the licence plate: {selectedPlate}?",
+                    "Confirm Deletion",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+                // If user clicks ok
+                if (result == DialogResult.OK)
+                {
+                    // Remove from MainList
+                    MainList.Remove(selectedPlate);
+                    // Clear the input text box
+                    textBoxInput.Clear();
+                    // Refresh the display
+                    DisplayMainList();
+                    // Update the status strip
+                    toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' was removed";
+                }
+                else
+                {
+                    // Display error to user
+                    toolStripStatusLabel1.Text = "Deletion cancelled";
+                }
+            }
         }
         #endregion Delete
 
         #region Tag
+        // 2.14
         // Method to tag a licence plate in the main list to move it to the tagged list
         private void buttonTag_Click(object sender, EventArgs e)
         {
@@ -475,11 +517,12 @@ namespace Car_Park_Registration_Tracker
                 return;
             }
             // If nothing is seleced, display error message to user
-            toolStripStatusLabel1.Text = "You need to select a licence plate from the main list to tag it";
+            toolStripStatusLabel1.Text = "You need to select a licence plate from the main list to tag";
         }
 
+        // 2.15
         // Method to remove plate from tagged list if double mouse clicked in the tagged list box
-        private void listBoxTagged_MouseDoubleClick()
+        private void listBoxTagged_DoubleClick(object sender, EventArgs e)
         {
             // Check user selected from the tagged list
             if (listBoxTagged.SelectedItem != null)
@@ -501,17 +544,106 @@ namespace Car_Park_Registration_Tracker
         #endregion Tag
         #endregion AddEditDeleteTag
 
-        #region Reset
-        private void buttonReset_Click(object sender, EventArgs e)
+        #region Search
+        // 2.11
+        // Method to binary search both lists for target written in the text box
+        private void buttonBinary_Click(object sender, EventArgs e)
         {
-            // Clear licence plate data from both lists
-            MainList.Clear();
-            TaggedList.Clear();
-            // Clear list boxes and text box
-            listBoxMain.Items.Clear();
-            listBoxTagged.Items.Clear();
-            textBoxInput.Clear();
+            // Declare target as textbox input (trim to remove blank spaces)
+            string target = textBoxInput.Text.Trim();
+            // Check textbox isn't empty
+            if (string.IsNullOrWhiteSpace(target))
+            {
+                toolStripStatusLabel1.Text = "Please enter a licence plate to search";
+                return;
+            }
+            // Use inbuilt binary search on both lists and declare list index of target
+            int mainIndex = MainList.BinarySearch(target);
+            int taggedIndex = TaggedList.BinarySearch(target);
+            // Get results
+            if (mainIndex >= 0)
+            {
+                // Highlights target when found in main list
+                listBoxMain.SelectedItem = MainList[mainIndex];
+                listBoxMain.Focus();
+                // Display message to user
+                toolStripStatusLabel1.Text = $"Licence plate '{target}' found in Main List using Binary Search";
+            }
+            else if (taggedIndex >= 0)
+            {
+                // Highlights target when found in tagged list
+                listBoxTagged.SelectedItem = TaggedList[taggedIndex];
+                listBoxTagged.Focus();
+                // Display message to user
+                toolStripStatusLabel1.Text = $"Licence plate '{target}' found in Tagged List using Binary Search";
+            }
+            else
+            {
+                // Display error message if target is not found
+                toolStripStatusLabel1.Text = $"Licence plate '{target}' not found using Binary Search";
+                // Clear and refocus the input field
+                textBoxInput.Clear();
+                textBoxInput.Focus();
+            }
         }
-        #endregion Reset
+
+        // 2.12
+        // Method to linear search both lists for target written in the text box
+        private void buttonLinear_Click(object sender, EventArgs e)
+        {
+            // Declare target as textbox input (trim to remove blank spaces)
+            string target = textBoxInput.Text.Trim();
+            // Check textbox isn't empty
+            if (string.IsNullOrWhiteSpace(target))
+            {
+                toolStripStatusLabel1.Text = "Please enter a licence plate to search";
+                return;
+            }
+            // Set boolean variable for target found
+            bool found = false;
+            // Search main list
+            foreach (var plate in MainList)
+            {
+                if (plate.Equals(target, StringComparison.OrdinalIgnoreCase))
+                {
+                    // Highlights target when found in main list
+                    listBoxMain.SelectedItem = plate;
+                    listBoxMain.Focus();
+                    // Display message to user
+                    toolStripStatusLabel1.Text = $"Licence plate '{target}' found in Main List using Linear Search";
+                    // Set found to true
+                    found = true;
+                    break;
+                }
+            }
+            // If not found in main list, search tagged list
+            if (!found)
+            {
+                foreach (var plate in TaggedList)
+                {
+                    if (plate.Equals(target, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Highlights target when found in tagged list
+                        listBoxTagged.SelectedItem = plate;
+                        listBoxTagged.Focus();
+                        // Display message to user
+                        toolStripStatusLabel1.Text = $"Licence plate '{target}' found in Tagged List using Linear Search";
+                        // Set found to true
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            // If still not found
+            if (!found)
+            {
+                // Display error message if target is not found
+                toolStripStatusLabel1.Text = $"Licence plate '{target}' not found using Linear Search";
+                // Clear and refocus the input field
+                textBoxInput.Clear();
+                textBoxInput.Focus();
+            }
+        }
+        #endregion Search
     } // end class
 } // end namespace
