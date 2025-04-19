@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.textBoxTitle = new System.Windows.Forms.TextBox();
             this.textBoxSubtitle = new System.Windows.Forms.TextBox();
@@ -47,6 +48,7 @@
             this.buttonTag = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -71,7 +73,7 @@
             this.textBoxTitle.Location = new System.Drawing.Point(12, 36);
             this.textBoxTitle.Name = "textBoxTitle";
             this.textBoxTitle.ReadOnly = true;
-            this.textBoxTitle.Size = new System.Drawing.Size(430, 31);
+            this.textBoxTitle.Size = new System.Drawing.Size(430, 46);
             this.textBoxTitle.TabIndex = 1;
             this.textBoxTitle.Text = "Active Systems Pty";
             this.textBoxTitle.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -84,7 +86,7 @@
             this.textBoxSubtitle.Location = new System.Drawing.Point(12, 88);
             this.textBoxSubtitle.Name = "textBoxSubtitle";
             this.textBoxSubtitle.ReadOnly = true;
-            this.textBoxSubtitle.Size = new System.Drawing.Size(430, 19);
+            this.textBoxSubtitle.Size = new System.Drawing.Size(430, 28);
             this.textBoxSubtitle.TabIndex = 2;
             this.textBoxSubtitle.Text = "Licence Plate Management";
             this.textBoxSubtitle.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -94,18 +96,20 @@
             this.labelLicencePlates.AutoSize = true;
             this.labelLicencePlates.Location = new System.Drawing.Point(12, 143);
             this.labelLicencePlates.Name = "labelLicencePlates";
-            this.labelLicencePlates.Size = new System.Drawing.Size(104, 17);
+            this.labelLicencePlates.Size = new System.Drawing.Size(145, 25);
             this.labelLicencePlates.TabIndex = 3;
             this.labelLicencePlates.Text = "Licence Plates:";
             // 
             // listBoxMain
             // 
             this.listBoxMain.FormattingEnabled = true;
-            this.listBoxMain.ItemHeight = 16;
+            this.listBoxMain.ItemHeight = 25;
             this.listBoxMain.Location = new System.Drawing.Point(12, 171);
             this.listBoxMain.Name = "listBoxMain";
-            this.listBoxMain.Size = new System.Drawing.Size(167, 372);
+            this.listBoxMain.Size = new System.Drawing.Size(167, 354);
             this.listBoxMain.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.listBoxMain, "Display main list of licence plates. Click on a plate to select and display in th" +
+        "e input box to the right. Double click on a plate to delete.");
             this.listBoxMain.SelectedIndexChanged += new System.EventHandler(this.listBoxMain_SelectedIndexChanged);
             this.listBoxMain.DoubleClick += new System.EventHandler(this.listBoxMain_DoubleClick);
             // 
@@ -114,18 +118,21 @@
             this.labelTagged.AutoSize = true;
             this.labelTagged.Location = new System.Drawing.Point(185, 143);
             this.labelTagged.Name = "labelTagged";
-            this.labelTagged.Size = new System.Drawing.Size(61, 17);
+            this.labelTagged.Size = new System.Drawing.Size(86, 25);
             this.labelTagged.TabIndex = 5;
             this.labelTagged.Text = "Tagged:";
             // 
             // listBoxTagged
             // 
             this.listBoxTagged.FormattingEnabled = true;
-            this.listBoxTagged.ItemHeight = 16;
+            this.listBoxTagged.ItemHeight = 25;
             this.listBoxTagged.Location = new System.Drawing.Point(190, 171);
             this.listBoxTagged.Name = "listBoxTagged";
-            this.listBoxTagged.Size = new System.Drawing.Size(167, 372);
+            this.listBoxTagged.Size = new System.Drawing.Size(167, 354);
             this.listBoxTagged.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.listBoxTagged, "Display tagged list of licence plates. Click on a plate to select and display in " +
+        "the input box to the right. Double click on a plate to move back to the main lis" +
+        "t.");
             this.listBoxTagged.SelectedIndexChanged += new System.EventHandler(this.listBoxTagged_SelectedIndexChanged);
             this.listBoxTagged.DoubleClick += new System.EventHandler(this.listBoxTagged_DoubleClick);
             // 
@@ -136,6 +143,7 @@
             this.buttonOpen.Size = new System.Drawing.Size(106, 49);
             this.buttonOpen.TabIndex = 7;
             this.buttonOpen.Text = "Open";
+            this.toolTip1.SetToolTip(this.buttonOpen, "Open a text file.");
             this.buttonOpen.UseVisualStyleBackColor = true;
             this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
             // 
@@ -143,8 +151,10 @@
             // 
             this.textBoxInput.Location = new System.Drawing.Point(363, 226);
             this.textBoxInput.Name = "textBoxInput";
-            this.textBoxInput.Size = new System.Drawing.Size(218, 23);
+            this.textBoxInput.Size = new System.Drawing.Size(218, 30);
             this.textBoxInput.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.textBoxInput, "Type a licence plate to Enter, or use one of the search functions. OR select a li" +
+        "cence plate to Edit, Exit, or Tag.");
             // 
             // buttonEnter
             // 
@@ -153,6 +163,7 @@
             this.buttonEnter.Size = new System.Drawing.Size(106, 49);
             this.buttonEnter.TabIndex = 9;
             this.buttonEnter.Text = "Enter";
+            this.toolTip1.SetToolTip(this.buttonEnter, "Add a licence plate to the main list.");
             this.buttonEnter.UseVisualStyleBackColor = true;
             this.buttonEnter.Click += new System.EventHandler(this.buttonEnter_Click);
             // 
@@ -163,7 +174,9 @@
             this.buttonExit.Size = new System.Drawing.Size(106, 49);
             this.buttonExit.TabIndex = 10;
             this.buttonExit.Text = "Exit";
+            this.toolTip1.SetToolTip(this.buttonExit, "Remove a licence plate from main list.");
             this.buttonExit.UseVisualStyleBackColor = true;
+            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             // 
             // buttonEdit
             // 
@@ -172,6 +185,7 @@
             this.buttonEdit.Size = new System.Drawing.Size(106, 49);
             this.buttonEdit.TabIndex = 11;
             this.buttonEdit.Text = "Edit";
+            this.toolTip1.SetToolTip(this.buttonEdit, "Select a licence plate to Edit from either list.");
             this.buttonEdit.UseVisualStyleBackColor = true;
             this.buttonEdit.Click += new System.EventHandler(this.buttonEdit_Click);
             // 
@@ -182,6 +196,7 @@
             this.buttonReset.Size = new System.Drawing.Size(106, 49);
             this.buttonReset.TabIndex = 12;
             this.buttonReset.Text = "Reset";
+            this.toolTip1.SetToolTip(this.buttonReset, "Clear all data in current file.");
             this.buttonReset.UseVisualStyleBackColor = true;
             this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
@@ -192,6 +207,7 @@
             this.buttonBinary.Size = new System.Drawing.Size(215, 49);
             this.buttonBinary.TabIndex = 13;
             this.buttonBinary.Text = "Binary Search";
+            this.toolTip1.SetToolTip(this.buttonBinary, "Search both lists using the Binary method.");
             this.buttonBinary.UseVisualStyleBackColor = true;
             this.buttonBinary.Click += new System.EventHandler(this.buttonBinary_Click);
             // 
@@ -202,7 +218,9 @@
             this.buttonLinear.Size = new System.Drawing.Size(215, 49);
             this.buttonLinear.TabIndex = 14;
             this.buttonLinear.Text = "Linear Search";
+            this.toolTip1.SetToolTip(this.buttonLinear, "Search both lists using the Linear method.");
             this.buttonLinear.UseVisualStyleBackColor = true;
+            this.buttonLinear.Click += new System.EventHandler(this.buttonLinear_Click);
             // 
             // buttonSave
             // 
@@ -211,6 +229,7 @@
             this.buttonSave.Size = new System.Drawing.Size(106, 49);
             this.buttonSave.TabIndex = 15;
             this.buttonSave.Text = "Save";
+            this.toolTip1.SetToolTip(this.buttonSave, "Save changes to current or new text file.");
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
@@ -221,7 +240,9 @@
             this.buttonTag.Size = new System.Drawing.Size(106, 49);
             this.buttonTag.TabIndex = 16;
             this.buttonTag.Text = "Tag";
+            this.toolTip1.SetToolTip(this.buttonTag, "Tag a licence plate for further inspection.");
             this.buttonTag.UseVisualStyleBackColor = true;
+            this.buttonTag.Click += new System.EventHandler(this.buttonTag_Click);
             // 
             // statusStrip
             // 
@@ -229,21 +250,22 @@
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip.Location = new System.Drawing.Point(0, 553);
+            this.statusStrip.Location = new System.Drawing.Point(0, 542);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(600, 24);
+            this.statusStrip.Size = new System.Drawing.Size(600, 35);
             this.statusStrip.TabIndex = 17;
             this.statusStrip.Text = "statusStrip";
+            this.toolTip1.SetToolTip(this.statusStrip, "Status strip will display all error and success messages.");
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(83, 19);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(117, 28);
             this.toolStripStatusLabel1.Text = "Processing...";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 577);
             this.Controls.Add(this.statusStrip);
@@ -299,6 +321,7 @@
         private System.Windows.Forms.Button buttonTag;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

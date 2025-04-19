@@ -1,6 +1,6 @@
 ﻿// Niamh Cavanagh
 // Date: 12 April 2025
-// Version: 1.1
+// Version: 2.0
 // Car Park Registration Tracker aka Licence Plate Management
 
 using System;
@@ -123,6 +123,8 @@ namespace Car_Park_Registration_Tracker
             listBoxMain.Items.Clear();
             listBoxTagged.Items.Clear();
             textBoxInput.Clear();
+            // Update status strip
+            toolStripStatusLabel1.Text = "All licence plate data was removed";
         }
         #endregion Reset
         #endregion General
@@ -349,7 +351,7 @@ namespace Car_Park_Registration_Tracker
                 MainList.Add(textBoxInput.Text);
                 // Refresh the list display
                 DisplayMainList();
-                toolStripStatusLabel1.Text = "Licence plate successfully added";
+                toolStripStatusLabel1.Text = $"Licence plate '{textBoxInput.Text}' successfully added";
                 // Clear and refocus the input field
                 textBoxInput.Clear();
                 textBoxInput.Focus();
@@ -446,6 +448,8 @@ namespace Car_Park_Registration_Tracker
                 // Clear and refocus the input field
                 textBoxInput.Clear();
                 textBoxInput.Focus();
+                // Update status strip
+                toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' exited successfully";
                 return;
             }
             // If nothing is seleced, display error message to user
@@ -476,12 +480,12 @@ namespace Car_Park_Registration_Tracker
                     // Refresh the display
                     DisplayMainList();
                     // Update the status strip
-                    toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' was removed";
+                    toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' exited successfully";
                 }
                 else
                 {
                     // Display error to user
-                    toolStripStatusLabel1.Text = "Deletion cancelled";
+                    toolStripStatusLabel1.Text = "Exit cancelled";
                 }
             }
         }
@@ -496,7 +500,7 @@ namespace Car_Park_Registration_Tracker
             if (listBoxTagged.SelectedItem != null)
             {
                 // Display error to user
-                toolStripStatusLabel1.Text = "This licence plate is already tagged";
+                toolStripStatusLabel1.Text = $"This licence plate is already tagged";
                 listBoxTagged.ClearSelected();
                 return;
             }
@@ -511,6 +515,9 @@ namespace Car_Park_Registration_Tracker
                 // Display updated lists
                 DisplayMainList();
                 DisplayTaggedList();
+                // Clear and refocus the input field
+                textBoxInput.Clear();
+                textBoxInput.Focus();
                 // Display message to user
                 toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' tagged successfully";
                 listBoxMain.ClearSelected();
@@ -535,6 +542,9 @@ namespace Car_Park_Registration_Tracker
                 // Display updated lists
                 DisplayMainList();
                 DisplayTaggedList();
+                // Clear and refocus the input field
+                textBoxInput.Clear();
+                textBoxInput.Focus();
                 // Display message to user
                 toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' untagged successfully";
                 listBoxMain.ClearSelected();
