@@ -1,6 +1,6 @@
 ﻿// Niamh Cavanagh
-// Date: 12 April 2025
-// Version: 2.0
+// Date: 05 April 2025
+// Version: 3.0
 // Car Park Registration Tracker aka Licence Plate Management
 
 using System;
@@ -123,6 +123,8 @@ namespace Car_Park_Registration_Tracker
             listBoxMain.Items.Clear();
             listBoxTagged.Items.Clear();
             textBoxInput.Clear();
+            // Set bool unsaved changes
+            hasUnsavedChanges = true;
             // Update status strip
             toolStripStatusLabel1.Text = "All licence plate data was removed";
         }
@@ -199,16 +201,38 @@ namespace Car_Park_Registration_Tracker
         #endregion Open
 
         #region Save
+        // Helper Method to get the next available file name - this helps towards stopping double ups
+        private string GetNextAvailableFileName(string baseDirectory, string prefix = "day_", string extension = ".txt")
+        {
+            int num = 1;
+            string fileName;
+            do
+            {
+                string formattedNum = num.ToString("D2");
+                fileName = Path.Combine(baseDirectory, $"{prefix}{formattedNum}{extension}");
+                num++;
+            }
+            while (File.Exists(fileName));
+            return fileName;
+        }
+        
         // 2.13 a
         // Method to write the current lists to a text file
         private void SaveToFile()
         {
+            // Determine starting folder
+            string baseDirectory = string.IsNullOrEmpty(currentFileName)
+                ? Environment.CurrentDirectory
+                : Path.GetDirectoryName(currentFileName);
+            // Generate the suggested file name
+            string suggestedFileName = Path.GetFileName(GetNextAvailableFileName(baseDirectory));
             // Open save dialog box
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "Text Files (*.txt) | *.txt",
                 DefaultExt = "txt",
-                Title = "Save Licence Plate Data"
+                Title = "Save Licence Plate Data",
+                FileName = suggestedFileName // set the suggested file name here
             };
             // If user clicks OK
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -231,6 +255,8 @@ namespace Car_Park_Registration_Tracker
                             writer.WriteLine($">{item}");
                         }
                     }
+                    // Save the name used to update currentFileName for future saves
+                    currentFileName = fileName;
                     // After saving, refresh the display of lists
                     DisplayMainList();
                     DisplayTaggedList();
@@ -286,15 +312,20 @@ namespace Car_Park_Registration_Tracker
             SaveToFile();
             // Mark that the user has manually saved
             userSaved = true;
+            // Set bool unsaved changes
+            hasUnsavedChanges = false;
         }
+
+        // Class-level flag for autosave incremented file name on form close
+        private bool hasUnsavedChanges = false;
 
         // 2.13 c
         // Method called when the form is closed - saved the list to a new file with an incremented number
         // Extra code has been added so if the user manually saved the file with the button, the auto save on file close is deemed unnessary and doesn't happen
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // Skip auto-save if user already saved
-            if (userSaved)
+            // Skip auto-save if user already saved or doesn't have unsaved changes
+            if (userSaved || !hasUnsavedChanges)
             {
                 // Just close the program
                 return;
@@ -308,24 +339,9 @@ namespace Car_Park_Registration_Tracker
                     // If no valid file is opened, exit
                     return;
                 }
-                // Extract number from the current file name and increment it (assuming format "day_xx.txt")
-                string fileNameWithoutExt = Path.GetFileNameWithoutExtension(currentFileName);
-                if (!fileNameWithoutExt.StartsWith("day_"))
-                {
-                    // If the file doesn't follow the expected format, exit
-                    return;
-                }
-                // Get number from file name
-                string numberPart = fileNameWithoutExt.Substring(4);
-                if (!int.TryParse(numberPart, out int num))
-                {
-                    // If the number is invalid, exit
-                }
-                // Increment the number
-                num++;
-                // Ensure 2-digit format
-                string newValue = num.ToString("D2");
-                string newFileName = Path.Combine(Path.GetDirectoryName(currentFileName), $"day_{newValue}.txt");
+                // Set new file name
+                string baseDirectory = Path.GetDirectoryName(currentFileName);
+                string newFileName = GetNextAvailableFileName(baseDirectory);
                 // Call Save method
                 SaveToFile(newFileName);
             }
@@ -355,6 +371,8 @@ namespace Car_Park_Registration_Tracker
                 // Clear and refocus the input field
                 textBoxInput.Clear();
                 textBoxInput.Focus();
+                // Set bool unsaved changes
+                hasUnsavedChanges = true;
             }
             else
             {
@@ -385,6 +403,8 @@ namespace Car_Park_Registration_Tracker
                     textBoxInput.Focus();
                     // Update status strip
                     toolStripStatusLabel1.Text = "Licence plate updated successfully";
+                    // Set bool unsaved changes
+                    hasUnsavedChanges = true;
                     return;
                 }
                 // If user selected from tagged list
@@ -400,6 +420,8 @@ namespace Car_Park_Registration_Tracker
                     textBoxInput.Focus();
                     // Update status strip
                     toolStripStatusLabel1.Text = "Licence plate updated successfully";
+                    // Set bool unsaved changes
+                    hasUnsavedChanges = true;
                     return;
                 }
                 // Clear text box and display updated lists
@@ -450,6 +472,8 @@ namespace Car_Park_Registration_Tracker
                 textBoxInput.Focus();
                 // Update status strip
                 toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' exited successfully";
+                // Set bool unsaved changes
+                hasUnsavedChanges = true;
                 return;
             }
             // If nothing is seleced, display error message to user
@@ -481,6 +505,8 @@ namespace Car_Park_Registration_Tracker
                     DisplayMainList();
                     // Update the status strip
                     toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' exited successfully";
+                    // Set bool unsaved changes
+                    hasUnsavedChanges = true;
                 }
                 else
                 {
@@ -521,6 +547,8 @@ namespace Car_Park_Registration_Tracker
                 // Display message to user
                 toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' tagged successfully";
                 listBoxMain.ClearSelected();
+                // Set bool unsaved changes
+                hasUnsavedChanges = true;
                 return;
             }
             // If nothing is seleced, display error message to user
@@ -548,6 +576,8 @@ namespace Car_Park_Registration_Tracker
                 // Display message to user
                 toolStripStatusLabel1.Text = $"Licence plate '{selectedPlate}' untagged successfully";
                 listBoxMain.ClearSelected();
+                // Set bool unsaved changes
+                hasUnsavedChanges = true;
                 return;
             }
         }
